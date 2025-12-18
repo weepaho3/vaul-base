@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Dialog } from "@base-ui-components/react/dialog"
+import { Dialog } from "@base-ui/react/dialog"
 import { CheckIcon, CopyIcon, Loader2Icon, XIcon } from "lucide-react"
 import { createHighlighter } from "shiki"
 

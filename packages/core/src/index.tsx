@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Dialog } from "@base-ui-components/react/dialog"
+import { Dialog } from "@base-ui/react/dialog"
 
 import { useControlled } from "@/hooks/use-controlled"
 import { useForkRef } from "@/hooks/use-fork-ref"
@@ -1043,7 +1043,7 @@ export const Content = React.forwardRef<HTMLDivElement, ContentProps>(function (
           ? ({
               "--snap-point-height": `${snapPointsOffset[activeSnapPointIndex ?? 0]!}px`,
               ...style,
-            } as React.CSSProperties)
+            } as React.CSSProperties & Record<string, string>)
           : style
       }
       onPointerDown={(event) => {
