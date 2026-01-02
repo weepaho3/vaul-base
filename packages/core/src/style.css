@@ -1,44 +1,68 @@
 [data-vaul-drawer] {
   touch-action: none;
   will-change: transform;
-  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  transition:
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    height 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    bottom 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    top 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    left 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    right 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    width 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    max-width 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    border-radius 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.5s cubic-bezier(0.32, 0.72, 0, 1);
   animation-duration: 0.5s;
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[data-vaul-drawer][data-vaul-drawer-morphing="true"] {
+  animation: none !important;
 }
 
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="bottom"][data-open] {
+  transform: translate3d(50%, 0, 0);
   animation-name: slideFromBottom;
 }
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="bottom"]:not(
     [data-open]
   ) {
+  transform: translate3d(50%, 100%, 0);
   animation-name: slideToBottom;
 }
 
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="top"][data-open] {
+  transform: translate3d(50%, 100%, 0);
   animation-name: slideFromTop;
 }
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="top"]:not(
     [data-open]
   ) {
+  transform: translate3d(50%, 0, 0);
   animation-name: slideToTop;
 }
 
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="left"][data-open] {
+  transform: translate3d(100%, 50%, 0);
   animation-name: slideFromLeft;
 }
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="left"]:not(
     [data-open]
   ) {
+  transform: translate3d(0, 50%, 0);
   animation-name: slideToLeft;
 }
 
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="right"][data-open] {
+  transform: translate3d(0, 50%, 0);
   animation-name: slideFromRight;
 }
 [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="right"]:not(
     [data-open]
   ) {
+  transform: translate3d(100%, 50%, 0);
   animation-name: slideToRight;
 }
 
@@ -218,47 +242,115 @@
   }
 }
 
+[data-vaul-drawer][data-vaul-drawer-direction="center"][data-open] {
+  opacity: 1;
+  transform: translate3d(50%, 50%, 0) scale(1);
+  animation-name: none;
+}
+[data-vaul-drawer][data-vaul-drawer-direction="center"]:not([data-open]) {
+  opacity: 0;
+  transform: translate3d(50%, 50%, 0) scale(0.95);
+  animation-name: none;
+}
+
+[data-vaul-drawer][data-vaul-drawer-direction="center"] {
+  bottom: 50%;
+  right: 50%;
+  left: auto;
+  top: auto;
+  transform: translate3d(50%, 50%, 0) scale(0.95);
+  position: fixed;
+  touch-action: auto;
+}
+
+[data-vaul-drawer][data-vaul-drawer-direction="bottom"] {
+  bottom: 0;
+  right: 50%;
+  left: auto;
+  top: auto;
+  transform: translate3d(50%, 0, 0);
+}
+
+[data-vaul-drawer][data-vaul-drawer-direction="top"] {
+  bottom: 100%;
+  right: 50%;
+  left: auto;
+  top: auto;
+  transform: translate3d(50%, 100%, 0);
+}
+
+[data-vaul-drawer][data-vaul-drawer-direction="left"] {
+  bottom: 50%;
+  right: 100%;
+  left: auto;
+  top: auto;
+  transform: translate3d(100%, 50%, 0);
+}
+
+[data-vaul-drawer][data-vaul-drawer-direction="right"] {
+  bottom: 50%;
+  right: 0;
+  left: auto;
+  top: auto;
+  transform: translate3d(0, 50%, 0);
+}
+
 @keyframes slideFromTop {
   from {
-    transform: translate3d(0, calc(var(--initial-transform, 100%) * -1), 0);
+    transform: translate3d(50%, 0, 0);
   }
   to {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(50%, 100%, 0);
   }
 }
 
 @keyframes slideToTop {
   to {
-    transform: translate3d(0, calc(var(--initial-transform, 100%) * -1), 0);
+    transform: translate3d(50%, 0, 0);
   }
 }
 
 @keyframes slideFromLeft {
   from {
-    transform: translate3d(calc(var(--initial-transform, 100%) * -1), 0, 0);
+    transform: translate3d(0, 50%, 0);
   }
   to {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(100%, 50%, 0);
   }
 }
 
 @keyframes slideToLeft {
   to {
-    transform: translate3d(calc(var(--initial-transform, 100%) * -1), 0, 0);
+    transform: translate3d(0, 50%, 0);
   }
 }
 
 @keyframes slideFromRight {
   from {
-    transform: translate3d(var(--initial-transform, 100%), 0, 0);
+    transform: translate3d(100%, 50%, 0);
   }
   to {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 50%, 0);
   }
 }
 
 @keyframes slideToRight {
   to {
-    transform: translate3d(var(--initial-transform, 100%), 0, 0);
+    transform: translate3d(100%, 50%, 0);
+  }
+}
+
+@keyframes slideFromBottom {
+  from {
+    transform: translate3d(50%, 100%, 0);
+  }
+  to {
+    transform: translate3d(50%, 0, 0);
+  }
+}
+
+@keyframes slideToBottom {
+  to {
+    transform: translate3d(50%, 100%, 0);
   }
 }

@@ -68,6 +68,8 @@ export const isVertical = (direction: DrawerDirection) => {
     case "left":
     case "right":
       return false
+    case "center":
+      return true
     default:
       return direction satisfies never
   }
