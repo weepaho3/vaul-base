@@ -468,8 +468,13 @@ export function Root({
         const translateValue =
           Math.min(dampenedDraggedDistance * -1, 0) * directionMultiplier
 
-        const x = isVertical(direction) ? "50%" : `${translateValue}px`
-        const y = isVertical(direction) ? `${translateValue}px` : "50%"
+        const transformValue =
+          direction === "left" || direction === "top"
+            ? `calc(100% + ${translateValue}px)`
+            : `${translateValue}px`
+
+        const x = isVertical(direction) ? "50%" : transformValue
+        const y = isVertical(direction) ? transformValue : "50%"
 
         set(drawerRef.current, {
           transform: `translate3d(${x}, ${y}, 0)`,
@@ -521,8 +526,13 @@ export function Root({
       if (!snapPoints) {
         const translateValue = absDraggedDistance * directionMultiplier
 
-        const x = isVertical(direction) ? "50%" : `${translateValue}px`
-        const y = isVertical(direction) ? `${translateValue}px` : "50%"
+        const transformValue =
+          direction === "left" || direction === "top"
+            ? `calc(100% + ${translateValue}px)`
+            : `${translateValue}px`
+
+        const x = isVertical(direction) ? "50%" : transformValue
+        const y = isVertical(direction) ? transformValue : "50%"
 
         set(drawerRef.current, {
           transform: `translate3d(${x}, ${y}, 0)`,
@@ -630,8 +640,11 @@ export function Root({
     const wrapper = document.querySelector("[data-vaul-drawer-wrapper]")
     const currentSwipeAmount = getTranslate(drawerRef.current, direction)
 
-    const x = isVertical(direction) ? "50%" : "0"
-    const y = isVertical(direction) ? "0" : "50%"
+    const transformValue =
+      direction === "left" || direction === "top" ? "100%" : "0px"
+
+    const x = isVertical(direction) ? "50%" : transformValue
+    const y = isVertical(direction) ? transformValue : "50%"
 
     set(drawerRef.current, {
       transform: `translate3d(${x}, ${y}, 0)`,
@@ -756,8 +769,14 @@ export function Root({
     )
 
     const isHorizontalSwipe = direction === "left" || direction === "right"
+    const swipeToClose =
+      direction === "left" || direction === "top"
+        ? (isHorizontalSwipe ? visibleDrawerWidth : visibleDrawerHeight) -
+          swipeAmount
+        : swipeAmount
+
     if (
-      Math.abs(swipeAmount) >=
+      Math.abs(swipeToClose) >=
       (isHorizontalSwipe ? visibleDrawerWidth : visibleDrawerHeight) *
         closeThreshold
     ) {
