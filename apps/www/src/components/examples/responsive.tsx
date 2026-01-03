@@ -12,13 +12,13 @@ const ResponsiveDrawer = () => {
       />
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/80" />
-        <Drawer.Content className="bg-background text-foreground fixed inset-x-0 bottom-0 h-auto w-full border group
+        <Drawer.Content className="bg-background text-foreground fixed inset-x-0 bottom-0 h-auto w-full border group rounded-lg
 
-        data-[vaul-drawer-direction=center]:max-w-xl data-[vaul-drawer-direction=center]:rounded-lg
+        data-[vaul-drawer-direction=center]:max-w-xl
         data-[vaul-drawer-direction=bottom]:max-w-full data-[vaul-drawer-direction=bottom]:rounded-b-none
-        data-[vaul-drawer-direction=top]:max-w-full data-[vaul-drawer-direction=top]:rounded-b-none
-        data-[vaul-drawer-direction=left]:max-w-64 data-[vaul-drawer-direction=left]:w-2/3 data-[vaul-drawer-direction=left]:rounded-lg data-[vaul-drawer-direction=left]:h-full
-        data-[vaul-drawer-direction=right]:max-w-64 data-[vaul-drawer-direction=right]:w-2/3 data-[vaul-drawer-direction=right]:rounded-lg data-[vaul-drawer-direction=right]:h-full
+        data-[vaul-drawer-direction=top]:max-w-full data-[vaul-drawer-direction=top]:rounded-t-none
+        data-[vaul-drawer-direction=left]:max-w-64 data-[vaul-drawer-direction=left]:w-2/3 data-[vaul-drawer-direction=left]:rounded-l-none data-[vaul-drawer-direction=left]:h-full
+        data-[vaul-drawer-direction=right]:max-w-64 data-[vaul-drawer-direction=right]:w-2/3 data-[vaul-drawer-direction=right]:rounded-r-none data-[vaul-drawer-direction=right]:h-full
         ">
           <div className="hidden group-data-[vaul-drawer-direction=bottom]:block">
             <Drawer.Handle className="top-3" />
