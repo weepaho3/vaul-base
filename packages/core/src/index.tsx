@@ -13,6 +13,7 @@ import { useSnapPoints } from "@/hooks/use-snap-points"
 import { isIOS, isMobileFirefox } from "@/utils/browser"
 import {
   dampenValue,
+  getTransform,
   getTranslate,
   isVertical,
   reset,
@@ -333,7 +334,11 @@ export function Root({
       return false
     }
 
-    if (direction === "right" || direction === "left") {
+    if (
+      direction === "right" ||
+      direction === "left" ||
+      direction === "top"
+    ) {
       return true
     }
 
@@ -477,7 +482,7 @@ export function Root({
         const y = isVertical(direction) ? transformValue : "50%"
 
         set(drawerRef.current, {
-          transform: `translate3d(${x}, ${y}, 0)`,
+          transform: getTransform(direction, translateValue),
         })
         return
       }
@@ -535,7 +540,7 @@ export function Root({
         const y = isVertical(direction) ? transformValue : "50%"
 
         set(drawerRef.current, {
-          transform: `translate3d(${x}, ${y}, 0)`,
+          transform: getTransform(direction, translateValue),
         })
       }
     }
@@ -815,27 +820,19 @@ export function Root({
       window.clearTimeout(nestedOpenChangeTimer.current)
     }
 
-    const x = isVertical(direction) ? "50%" : `${initialTranslate}px`
-    const y = isVertical(direction) ? `${initialTranslate}px` : "50%"
-
     set(drawerRef.current, {
       transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
-      transform: `scale(${scale}) translate3d(${x}, ${y}, 0)`,
+      transform: `${getTransform(direction, initialTranslate)} scale(${scale})`,
     })
 
     if (!o && drawerRef.current) {
       nestedOpenChangeTimer.current = setTimeout(() => {
-        const translateValue = getTranslate(
-          drawerRef.current as HTMLElement,
-          direction
-        )
-
-        const x = isVertical(direction) ? "50%" : `${translateValue}px`
-        const y = isVertical(direction) ? `${translateValue}px` : "50%"
+        const translateValue =
+          getTranslate(drawerRef.current as HTMLElement, direction) || 0
 
         set(drawerRef.current, {
           transition: "none",
-          transform: `translate3d(${x}, ${y}, 0)`,
+          transform: getTransform(direction, translateValue),
         })
       }, 500)
     }
@@ -854,11 +851,8 @@ export function Root({
     const newTranslate =
       -NESTED_DISPLACEMENT + percentageDragged * NESTED_DISPLACEMENT
 
-    const x = isVertical(direction) ? "50%" : `${newTranslate}px`
-    const y = isVertical(direction) ? `${newTranslate}px` : "50%"
-
     set(drawerRef.current, {
-      transform: `scale(${newScale}) translate3d(${x}, ${y}, 0)`,
+      transform: `${getTransform(direction, newTranslate)} scale(${newScale})`,
       transition: "none",
     })
   }
@@ -873,12 +867,9 @@ export function Root({
     const translate = o ? -NESTED_DISPLACEMENT : 0
 
     if (o) {
-      const x = isVertical(direction) ? "50%" : `${translate}px`
-      const y = isVertical(direction) ? `${translate}px` : "50%"
-
       set(drawerRef.current, {
         transition: `transform ${TRANSITIONS.DURATION}s cubic-bezier(${TRANSITIONS.EASE.join(",")})`,
-        transform: `scale(${scale}) translate3d(${x}, ${y}, 0)`,
+        transform: `${getTransform(direction, translate)} scale(${scale})`,
       })
     }
   }
@@ -1088,8 +1079,10 @@ export const Content = React.forwardRef<HTMLDivElement, ContentProps>(function (
       data-vaul-drawer-direction={direction}
       data-vaul-drawer=""
       data-vaul-drawer-morphing={isMorphing.current ? "true" : "false"}
-      data-vaul-delayed-snap-points={delayedSnapPoints ? "true" : "false"}
-      data-vaul-snap-points={isOpen && hasSnapPoints ? "true" : "false"}
+      data-vaul-delayed-snap-points={
+        isOpen && delayedSnapPoints ? "true" : "false"
+      }
+      data-vaul-snap-points={hasSnapPoints ? "true" : "false"}
       data-vaul-custom-container={container ? "true" : "false"}
       data-vaul-animate={shouldAnimate?.current ? "true" : "false"}
       {...rest}
