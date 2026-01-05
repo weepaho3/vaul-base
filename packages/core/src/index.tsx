@@ -283,6 +283,32 @@ export function Root({
     noBodyStyles,
   })
 
+  // Prevent mobile OS from taking the drag gesture with native scrolling
+  React.useEffect(() => {
+    if (!isOpen) return
+    let element: HTMLDivElement | null = null
+
+    function onTouchMove(e: TouchEvent) {
+      if (isAllowedToDrag.current) {
+        e.preventDefault()
+      }
+    }
+
+    const id = requestAnimationFrame(() => {
+      element = drawerRef.current
+      if (element) {
+        element.addEventListener("touchmove", onTouchMove, { passive: false })
+      }
+    })
+
+    return () => {
+      cancelAnimationFrame(id)
+      if (element) {
+        element.removeEventListener("touchmove", onTouchMove)
+      }
+    }
+  }, [isOpen])
+
   function getScale() {
     return (window.innerWidth - WINDOW_TOP_OFFSET) / window.innerWidth
   }
@@ -473,14 +499,6 @@ export function Root({
         const translateValue =
           Math.min(dampenedDraggedDistance * -1, 0) * directionMultiplier
 
-        const transformValue =
-          direction === "left" || direction === "top"
-            ? `calc(100% + ${translateValue}px)`
-            : `${translateValue}px`
-
-        const x = isVertical(direction) ? "50%" : transformValue
-        const y = isVertical(direction) ? transformValue : "50%"
-
         set(drawerRef.current, {
           transform: getTransform(direction, translateValue),
         })
@@ -530,14 +548,6 @@ export function Root({
 
       if (!snapPoints) {
         const translateValue = absDraggedDistance * directionMultiplier
-
-        const transformValue =
-          direction === "left" || direction === "top"
-            ? `calc(100% + ${translateValue}px)`
-            : `${translateValue}px`
-
-        const x = isVertical(direction) ? "50%" : transformValue
-        const y = isVertical(direction) ? transformValue : "50%"
 
         set(drawerRef.current, {
           transform: getTransform(direction, translateValue),
